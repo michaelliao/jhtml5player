@@ -1,0 +1,15 @@
+dist
+*.py[co]
+*.tar
+*.tar.gz
+*.zip
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
+*.db
+
