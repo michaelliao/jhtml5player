@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>jhtml5player</title>
+    <script type="text/javascript" src="/test/jquery.min.js"></script>
+    <script type="text/javascript" src="/src/jhtml5player.js"></script>
+    <script type="text/javascript" src="/src/skin/gray/jhtml5player.skin.gray.js"></script>
+    <script type="text/javascript">
+var player_config = {
+
+    id: 'v1234',
+    class: '',
+    subtitle: 'http://localhost:8080/s.srt',
+
+    video: {
+        width: 640,
+        height: 360,
+        poster: 'http://mozorg.cdn.mozilla.net/media/img/firefox/video/poster-brand.jpg',
+        src: 'http://videos-cdn.mozilla.net/brand/Mozilla_Firefox_Manifesto_v0.2_640.mp4',
+    },
+
+    control_bar: {
+        position: 'docked', // 'docked', 'floating', 'none'
+        buttons: ['play', '|', 'progress-bar', '|', 'time', 'cc', 'volumn', 'volumn-bar', '|', 'fullscreen'],
+    },
+
+    control: {
+        preload: true,
+        autoplay: false,
+        loop: false,
+    },
+
+    play_button: true,
+
+    logo_overlays: [{
+        'style': {
+            'background-image': 'url(http://www.w3.org/html/logo/badge/html5-badge-h-multimedia.png)',
+            'opacity': '0.7',
+            'cursor': 'pointer',
+        },
+        'width': 133,
+        'height': 64,
+        'position': 'left top',
+        'margin_x': 30,
+        'margin_y': 30,
+        'onclick': function() { window.open('http://www.w3.org/'); },
+    }],
+
+    skin: skin_gray_config,
+};
+
+$(function() {
+    var player = $('#test-player').createPlayer(player_config);
+    player.setSubtitle('Mozilla Firefox');
+});
+    </script>
+</head>
+<body>
+    <div style="display:block;width:760px;margin:0 auto;padding:0;">
+        <div><h3>jhtml5player</h3></div>
+        <div>
+            <div id="test-player"></div>
+        </div>
+    </div>
+</body>
+</html>
