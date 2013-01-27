@@ -201,7 +201,7 @@
                         'padding': '0px',
                         'margin': '0px',
                     },
-                    'children': conf.skin.create_controls(conf.video.width, conf.skin.control_bar.height),
+                    'children': conf.skin.createControls(conf.video.width, conf.skin.control_bar.height),
                 }
             ],
         }
@@ -217,7 +217,7 @@
         };
         var skin_proxy = conf.skin.create_skin_proxy(v);
         $.each(_VIDEO_EVENTS, function(index, evt) {
-            var handler = skin_proxy['on' + evt];
+            var handler = skin_proxy[evt];
             if (typeof(handler)=='function') {
                 log('bind event ' + evt + '...');
                 var f = function(e) {
