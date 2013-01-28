@@ -5,13 +5,13 @@
 /*
 
 +------------------------------------------------------------------------------+
-| <div class="jhtml5player">                                                   |
+| <div id="JHTML5PLAYER_ID" class="jhtml5player">                              |
 |  +------------------------------------------------------------------------+  |
 |  | <div class="jhtml5player-stage">                                       |  |
 |  |  +------------------------------------------------------------------+  |  |
 |  |  | <video class="jhtml5player-stage-video">                         |  |  |
-|  |  |                                                                  |  |  |
-|  |  |                                                                  |  |  |
+|  |  |   or                                                             |  |  |
+|  |  | <object flash class="jhtml5player-stage-video">                  |  |  |
 |  |  |                                                                  |  |  |
 |  |  |                                                                  |  |  |
 |  |  |                                                                  |  |  |
@@ -27,7 +27,7 @@
 |  |  +------------------------------------------------------------------+  |  |
 |  +------------------------------------------------------------------------+  |
 |  +------------------------------------------------------------------------+  |
-|  | <div class="jhtml5player-control">                                     |  |
+|  | <div class="jhtml5player-controls">                                    |  |
 |  |  +------------------------------------------------------------------+  |  |
 |  |  | buttons...                                                       |  |  |
 |  |  +------------------------------------------------------------------+  |  |
@@ -35,7 +35,7 @@
 +------------------------------------------------------------------------------+
 */
 
-(function() {
+(function($) {
 
     var _VIDEO_EVENTS = ['click', 'mouseover', 'mouseout', 'loadstart', 'progress', 'suspend', 'abort', 'error', 'emptied', 'stalled', 'loadedmetadata', 'loadeddata', 'canplay', 'canplaythrough', 'playing', 'waiting', 'seeking', 'ended', 'durationchange', 'timeupdate', 'play', 'pause', 'ratechange', 'volumechange'];
 
@@ -43,7 +43,7 @@
 
     function _createPlayerId() {
         _player_id ++;
-        return '_JHTML5PLAYER_ID_' + _player_id;
+        return 'JHTML5PLAYER_ID_' + _player_id;
     }
 
     function _copyDict(d) {
@@ -117,7 +117,7 @@
      * create css on $(document).ready().
      */
     function createCss(css_dict) {
-        jQuery(function() {
+        $(function() {
             var style = document.createElement('style');
             style.type = 'text/css';
             style.innerHTML = dumpCss(css_dict);
@@ -126,10 +126,25 @@
     }
 
     function registerSkin(name, skin_object) {
-        jHtml5Player.skins[name] = skin_object;
+        jhtml5player.skins[name] = skin_object;
     }
 
     function _createPlayerHtml(conf, player_id) {
+        video_srcs = [];
+        if (typeof(conf.video.src)==='string') {
+            video_srcs.push({'tag':'source', 'src':conf.video.src});
+        }
+        else {
+            for (var i=0; i<conf.video.src.length; i++) {
+                var src = conf.video.src[i];
+                if (typeof(src)==='string') {
+                    video_srcs.push({'tag':'source', 'src':src});
+                }
+                else {
+                    video_srcs.push({'tag':'source', 'src':src.src, 'type':src.type});
+                }
+            }
+        }
         var video_proxy = {};
         var tag_video = {
             'tag': 'video',
@@ -138,13 +153,7 @@
                 'width': conf.video.width + 'px',
                 'height': conf.video.height + 'px',
             },
-            'children': [
-                {
-                    'tag': 'source',
-                    'type': 'video/mp4',
-                    'src': conf.video.src,
-                },
-            ],
+            'children': video_srcs,
         };
 
         var lo = conf.logo_overlays[0];
@@ -192,7 +201,7 @@
                 },
                 {
                     'tag': 'div',
-                    'class': 'jhtml5player-control',
+                    'class': 'jhtml5player-controls',
                     'style': {
                         'display': 'block',
                         'width': conf.video.width + 'px',
@@ -212,21 +221,18 @@
         var v = $('#' + player_id + ' video').get(0);
         var subtitle = $('#' + player_id + ' span.jhtml5player-subtitle');
 
-        var selector = function(cls) {
-            return $('#' + player_id + ' .' + cls);
-        };
-        var skin_proxy = conf.skin.create_skin_proxy(v);
+        var skin_proxy = conf.skin.create_skin_proxy(player_id, v);
         $.each(_VIDEO_EVENTS, function(index, evt) {
             var handler = skin_proxy[evt];
             if (typeof(handler)=='function') {
                 log('bind event ' + evt + '...');
                 var f = function(e) {
-                    handler(selector);
+                    handler();
                 }
                 v.addEventListener(evt, f);
             }
         });
-        conf.skin.init(selector, v);
+        conf.skin.init(player_id, v);
         return {
             'id': player_id,
             'setSubtitle': function(s) {
@@ -299,14 +305,28 @@
     jhtml5player.dumpCss = dumpCss;
     jhtml5player.createCss = createCss;
     jhtml5player.registerSkin = registerSkin;
+    jhtml5player.requestFullScreen = function(player_id) {
+        var $dom = $('#' + player_id).get(0);
+        if ($dom.requestFullScreen) {
+            $dom.requestFullScreen();
+        }
+        else if ($dom.webkitRequestFullScreen) {
+            $dom.webkitRequestFullScreen();
+        }
+        else if ($dom.mozRequestFullScreen) {
+            $dom.mozRequestFullScreen();
+        }
+    };
     jhtml5player.log = log
 
     // extend jquery:
 
-    $.fn.createPlayer = function() {
-        var arg = arguments[0] || {};
-        var player_id = _createPlayerId();
-        $(this[0]).html(_createPlayerHtml(arg, player_id));
-        return _createPlayer(arg, player_id);
-    };
-})();
+    $.fn.extend({
+        createPlayer: function() {
+            var arg = arguments[0] || {};
+            var player_id = _createPlayerId();
+            $(this).html(_createPlayerHtml(arg, player_id));
+            return _createPlayer(arg, player_id);
+        }
+    });
+})(jQuery);

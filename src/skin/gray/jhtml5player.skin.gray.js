@@ -94,13 +94,13 @@
         'div.player-button-fullscreen-disabled': {
             'background-position': '-208px 0px',
         },
-        'div.player-button-volumn': {
+        'div.player-button-volume': {
             'background-position': '-234px 0px',
         },
-        'div.player-button-volumn:hover': {
+        'div.player-button-volume:hover': {
             'background-position': '-260px 0px',
         },
-        'div.player-button-volumn-disabled': {
+        'div.player-button-volume-disabled': {
             'background-position': '-286px 0px',
         },
         'div.player-button-mute': {
@@ -121,7 +121,7 @@
         'div.player-button-cc-disabled': {
             'background-position': '-442px 0px',
         },
-        'div.player-volumn-bg': {
+        'div.player-volume-bg': {
             'display': 'block',
             'float': 'left',
             'width': '61px',
@@ -131,7 +131,7 @@
             'background-image': _IMAGE_PROGRESS,
             'background-position': '0px 0px',
         },
-        'div.player-volumn-icon': {
+        'div.player-volume-icon': {
             'display': 'block',
             'width': '11px',
             'height': '11px',
@@ -222,7 +222,7 @@
 
 })();
 
-function _create_progress_bar(w) {
+function _createProgressBar(w) {
     var offset = 0;
     var buffer = 0;
     var bw = w - 4;
@@ -305,7 +305,7 @@ function _create_progress_bar(w) {
     }
 }
 
-function _create_buttons(w) {
+function _createButtons(w) {
     jhtml5player.log('create button in width: ' + w);
     return [
         {
@@ -318,7 +318,7 @@ function _create_buttons(w) {
             'tag': 'div',
             'class': 'player-button-sep',
         },
-        _create_progress_bar(w - 26 * 4 - 16 * 3 - 12 - 61),
+        _createProgressBar(w - 26 * 4 - 16 * 3 - 12 - 61),
         {
             // sep: 16px
             'tag': 'div',
@@ -327,16 +327,16 @@ function _create_buttons(w) {
         {
             // volumn or mute: 26px
             'tag': 'div',
-            'class': 'jh5-btn-volumn player-button player-button-volumn',
+            'class': 'jh5-btn-volume player-button player-button-volume',
         },
         {
             // volumn bar: 61px
             'tag': 'div',
-            'class': 'player-volumn-bg',
+            'class': 'player-volume-bg',
             'children': [
                 {
                     'tag': 'div',
-                    'class': 'player-volumn-icon',
+                    'class': 'player-volume-icon',
                 }
             ],
         },
@@ -372,10 +372,16 @@ var skin_gray_config = {
         height: 35,
     },
 
-    'create_skin_proxy': function(video) {
-        function _update_progress($class) {
+    'create_skin_proxy': function(player_id, video) {
+        function $class(css) {
+            if (css) {
+                return $('#' + player_id + ' ' + css);
+            }
+            return $('#' + player_id);
+        }
+        function _updateProgress() {
             //_log(video.currentTime + ' / ' + video.duration);
-            var total = parseInt($class('player-progress').attr('total'));
+            var total = parseInt($class('.player-progress').attr('total'));
             var offset = 0;
             var buffered = offset;
             if (! isNaN(video.duration)) {
@@ -385,15 +391,15 @@ var skin_gray_config = {
                     buffered = total * video.buffered.end(0) / video.duration;
                 }
             }
-            $class('player-progress-played-bg').css('width', offset + 'px');
-            $class('player-progress-icon').css('left', (offset - 4) + 'px');
-            $class('player-progress-buffer-bg').css('width', (buffered - offset) + 'px');
+            $class('.player-progress-played-bg').css('width', offset + 'px');
+            $class('.player-progress-icon').css('left', (offset - 4) + 'px');
+            $class('.player-progress-buffer-bg').css('width', (buffered - offset) + 'px');
         }
-        function _update_volume($class) {
+        function _updateVolume() {
             if (video.muted) {
                 jhtml5player.log('muted!!!');
-                $class('jh5-btn-volumn').addClass('player-button-mute');
-                $class('player-volumn-icon').css('left', '0px');
+                $class('.jh5-btn-volume').addClass('player-button-mute');
+                $class('.player-volume-icon').css('left', '0px');
             }
             else {
                 var v = video.volume;
@@ -405,12 +411,12 @@ var skin_gray_config = {
                 if (offset > 50) {
                     offset = 50;
                 }
-                $class('jh5-btn-volumn').removeClass('player-button-mute');
-                $class('player-volumn-icon').css('left', offset + 'px');
+                $class('.jh5-btn-volume').removeClass('player-button-mute');
+                $class('.player-volume-icon').css('left', offset + 'px');
             }
         }
         return {
-            'click': function($class) {
+            'click': function() {
                 if (video.paused) {
                     video.play();
                 }
@@ -418,48 +424,48 @@ var skin_gray_config = {
                     video.pause();
                 }
             },
-            'play': function($class) {
-                $class('jh5-btn-play').addClass('player-button-pause');
-                $class('jh5-btn-bigplay').hide();
+            'play': function() {
+                $class('.jh5-btn-play').addClass('player-button-pause');
+                $class('.jh5-btn-bigplay').hide();
             },
-            'pause': function($class) {
-                $class('jh5-btn-play').removeClass('player-button-pause');
-                $class('jh5-btn-bigplay').show();
+            'pause': function() {
+                $class('.jh5-btn-play').removeClass('player-button-pause');
+                $class('.jh5-btn-bigplay').show();
             },
-            'stalled': function($class) {
+            'stalled': function() {
                 jhtml5player.log('stalled');
             },
-            'emptied': function($class) {
+            'emptied': function() {
                 jhtml5player.log('emptied');
             },
-            'seeking': function($class) {
+            'seeking': function() {
                 jhtml5player.log('seeking...');
             },
-            'suspend': function($class) {
+            'suspend': function() {
                 jhtml5player.log('suspend');
             },
-            'playing': function($class) {
+            'playing': function() {
                 jhtml5player.log('playing...');
             },
-            'waiting': function($class) {
+            'waiting': function() {
                 jhtml5player.log('waiting...');
             },
-            'end': function($class) {
+            'end': function() {
                 jhtml5player.log('end');
             },
-            'progress': function($class) {
-                _update_progress($class);
+            'progress': function() {
+                _updateProgress();
             },
-            'timeupdate': function($class) {
-                _update_progress($class);
+            'timeupdate': function() {
+                _updateProgress();
             },
-            'mute': function($class) {
-                _update_volume($class);
+            'mute': function() {
+                _updateVolume();
             },
-            'volumechange': function($class) {
-                _update_volume($class);
+            'volumechange': function() {
+                _updateVolume();
             },
-            'loadedmetadata': function($class) {
+            'loadedmetadata': function() {
                 jhtml5player.log(video.duration);
             },
         };
@@ -501,7 +507,7 @@ var skin_gray_config = {
                     'background-repeat': 'repeat-x',
                     'background-image': 'url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAjCAIAAADaE/fjAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAADNJREFUeNpi+P79O9OvX7+Y/v37x/T//38wjczGJ4ZMwzCIz8DAAKdBYiCaEBYUFAQIMAAM50TraqTFagAAAABJRU5ErkJggg==)',
                 },
-                'children': _create_buttons(w-16),
+                'children': _createButtons(w-16),
             },
             {
                 'tag': 'div',
@@ -517,8 +523,14 @@ var skin_gray_config = {
         ];
     },
 
-    'init': function($class, video) {
-        $class('jh5-btn-play').click(function() {
+    'init': function(player_id, video) {
+        function $class(css) {
+            if (css) {
+                return $('#' + player_id + ' ' + css);
+            }
+            return $('#' + player_id);
+        }
+        $class('.jh5-btn-play').click(function() {
             if (video.paused) {
                 video.play();
             }
@@ -526,16 +538,19 @@ var skin_gray_config = {
                 video.pause();
             }
         });
-        $class('jh5-btn-pause').click(function() {
+        $class('.player-button-fullscreen').click(function() {
+            jhtml5player.requestFullScreen(player_id);
+        });
+        $class('.jh5-btn-pause').click(function() {
             video.pause();
         });
-        $class('jh5-btn-bigplay').click(function() {
+        $class('.jh5-btn-bigplay').click(function() {
             video.play();
         });
-        $class('jh5-btn-volumn').click(function() {
+        $class('.jh5-btn-volume').click(function() {
             video.muted = ! video.muted;
         });
-        $class('player-progress').click(function(e) {
+        $class('.player-progress').click(function(e) {
             jhtml5player.log('clicked: ' + e.clientX + ' ' + e.pageX + ' ' + $(this).offset().left);
             var total = parseInt($(this).attr('total'));
             var offset = e.pageX - $(this).offset().left - 4;
@@ -548,7 +563,7 @@ var skin_gray_config = {
             }
             video.currentTime = video.duration * offset / total;
         });
-        $class('player-volumn-bg').click(function(e) {
+        $class('.player-volume-bg').click(function(e) {
             jhtml5player.log('clicked: ' + e.clientX + ' ' + e.pageX + ' ' + $(this).offset().left);
             var offset = e.pageX - $(this).offset().left - 5; // 0 to 56
             jhtml5player.log('offset = ' + offset);
@@ -560,7 +575,7 @@ var skin_gray_config = {
             }
             var vol = offset / 50;
             jhtml5player.log('vol = ' + vol);
-            //$class('player-volumn-icon').css('left', offset + 'px');
+            //$class('player-volume-icon').css('left', offset + 'px');
             if (vol <= 0.001) {
                 // set mute:
                 video.volume = 0;
