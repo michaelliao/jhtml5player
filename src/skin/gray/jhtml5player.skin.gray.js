@@ -2,7 +2,7 @@
  * jhtml5player gray skin
  */
 
-(function() {
+(function($) {
 
     _IMAGE_BIG_PLAY = 'url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAIAAABt+uBvAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAABSdJREFUeNrs21tP22YYB/DYfp0ThGNoAU2TthsKrJAmgQScE46dkLLxWSZN2jfZbqqp2yRUTS3TWqaCKGda6MIhUFWd1F3sbtpBXadthSS2kz2O1xBWYBdNiF0/f0XBIVJs/fS8J78J9dtPP1owp4dGAgRCIARCIARCIARCIAwCIRACIRACIRACIRAGgRAIgRAIgRDoTQip7sdlc7lb07fTW7s0TQ1c7k+Ni12dFw0NRFV34/D6F1Pb2xmGEIqiipBCwesdnEglLlzowApSs7f/2Ga3s4TQNF0oFhVF2d9/vJt55Pd5gMntbjc7EGWxWFk1DMMUS0AKIZIsZzKPdnb3h/3eVEpsb2s1LxC4QPuCaEA0/FEU9anEtLWT2draCQSHUuNCa0uLKSsIoj1rASOKKjMBnCzL36V30untkZHAeCLe3NxkLiDN5virY0xEY5Kkjc305maa44LA5HI1mgboVLRXmBQFmO4/eAhSYS6YEPnGxgaTAp3FJMvQN62ub9zfeBgNc4IQa3A6TQp0MtPLjgmYlpbX1tY3YtGQEI86HA6TAp3ARNOakzbSLSyurK0/GItF4nzEZrOZFOgYU8lInViWmSRpbn5xZXWd56Nj0bDNZjUp0IlMR9MBSbo7e29leT0uxKB7slpZkwK9ysSUGh0pMUE1zXw7t7i0KsZj0QgH/zMp0FlMgJSXbs/MAlMyEedGA+fJpC+gU5lkGR65XH766zvzC8vjJSZ416RA/2GCHFUTIdnD7M1b3wBTKikEA/5aM+kXqMykrXu1g/Ji+MWLgxtfTc/fWxpPCoFhX+X6xlxAJzJpIx1LyJ9//T114ybMCSZSCb/PUwsm5uOPPqzix0Hls6V7HbWofK1X+rfRlU4BDQ9OdnhwmNl7tLO7B4vezs6L1WUyRgX9bzXBSPf8+R/XP5+a7Vx4fyI5cLm/WkzGAzqRCepIVm9ekmfPfr/22ZdvdXdNTl7t6+15/RMZe9un3HMDjZVl7aU4HY6ff/n1k0+vwdLX7ECVTNokwGq1whIXmOBgdm7BvE3s7C5c3S8oFJhqTLjf2J1VYJr84CpW0FFK25RqFEXp7u6amEi9+87biiwh0BENBOZBiYTQ13dJlnKvr2N4oEqajg53Min29/eCSz57YN6JYiWNtnnb7nYnxPjgwHuKnJdyh2Zci51G09beJgr8Fc8g0ORzB7U4HTEoTXNLS0LkvVc8hYJcIxojAVXSNDU3CfGxoSFfQe1sDmt9amIgGpfLxfOxQMBfLChV72uMB1Qsat/AKsCcuMHp5PloMDhsKUKLyp7nZRCd0zgd9lgsOjoapCxq2Zz/xRDd0jgc9kgkHOJGGMoiy3l4sy6XRHRIA8txPhIKh0YJQ8mSJNeJRi9AZRoIa7VGQ6PRSIgltEpTKNb98ohOaAhLIpFQLBpmWUb9rgfUjT5C6kkDD/U+KcNx3FgsYrNZoa+RJUVX3SKpIw1N0xw3AuO33WZTVJqcRX8h9aIJBgPxeAxGcd3SnB9QJQ28HBr2w1rB1eiElYKeaWoDVLI4jcbn84pivMml0kh5vdPUBIhh6OJLlzINHHi9HjEhtDS5DERTE6Cenp6nT3+APqZs5PEMiKLQ1tpcoslajJYq/9pHVop3Zu4+efI9HF/q7RUF3t3eCjRQSRZjpspAFEUR1kYzamEWFBnmNTARtBg5VW5i0KaM2I7OCP4kE4EQCIEQCIEQCIEQCINACIRACIRACIRACIRBIARCIARCIGPkHwEGADme7yqmTdjqAAAAAElFTkSuQmCC)';
 
@@ -220,7 +220,7 @@
 
     jhtml5player.createCss(_CSS);
 
-})();
+})(jQuery);
 
 function _createProgressBar(w) {
     var offset = 0;
@@ -276,7 +276,7 @@ function _createProgressBar(w) {
                                 'tag': 'div',
                                 'class': 'player-progress-played-bg',
                                 'style': {
-                                    'width': '20px',
+                                    'width': '0px',
                                 }
                             },
                             {
