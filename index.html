@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <title>jhtml5player</title>
-    <script type="text/javascript" src="/test/jquery.min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
     <script type="text/javascript" src="/src/jhtml5player.js"></script>
     <script type="text/javascript" src="/src/skin/gray/jhtml5player.skin.gray.js"></script>
     <script type="text/javascript">
@@ -17,7 +17,7 @@ var player_config = {
         width: 640,
         height: 360,
         poster: 'http://mozorg.cdn.mozilla.net/media/img/firefox/video/poster-brand.jpg',
-        src: 'http://videos-cdn.mozilla.net/brand/Mozilla_Firefox_Manifesto_v0.2_640.mp4',
+        src: ['http://videos-cdn.mozilla.net/brand/Mozilla_Firefox_Manifesto_v0.2_640.mp4'],
     },
 
     control_bar: {
@@ -31,12 +31,14 @@ var player_config = {
         loop: false,
     },
 
-    play_button: true,
+    big_play_button: true,
+
+    prefer_flash: true,
 
     logo_overlays: [{
         'style': {
             'background-image': 'url(http://www.w3.org/html/logo/badge/html5-badge-h-multimedia.png)',
-            'opacity': '0.7',
+            'opacity': '0.8',
             'cursor': 'pointer',
         },
         'width': 133,
@@ -58,7 +60,7 @@ $(function() {
 </head>
 <body>
     <div style="display:block;width:760px;margin:0 auto;padding:0;">
-        <div><h3>jhtml5player</h3></div>
+        <div><p><a href="https://github.com/michaelliao/jhtml5player" target="_blank">jhtml5player</a></p></div>
         <div>
             <div id="test-player"></div>
         </div>
