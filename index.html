@@ -49,7 +49,7 @@ var player_config = {
         'onclick': function() { window.open('http://www.w3.org/'); },
     }],
 
-    skin: skin_gray_config,
+    skin: 'gray',
 };
 
 $(function() {
@@ -64,6 +64,20 @@ $(function() {
         <div>
             <div id="test-player"></div>
         </div>
+        <div><pre>
+// show me the code:
+&lt;script src="jquery.min.js"&gt;&lt;/script&gt;
+&lt;script src="jhtml5player.js"&gt;&lt;/script&gt;
+&lt;script src="jhtml5player.skin.gray.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  $(function() {
+    var conf = { video: { width: 640, height: 360, src: 'http://your/video.mp4' }, skin: 'gray' };
+    var player = $('#test-player').createPlayer(conf);
+  });
+&lt;/script&gt;
+&lt;div id="test-player"&gt;&lt;/div&gt;
+
+        </pre></div>
     </div>
 </body>
 </html>

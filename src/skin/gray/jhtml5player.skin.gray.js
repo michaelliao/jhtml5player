@@ -589,3 +589,5 @@ var skin_gray_config = {
         });
     }
 };
+
+jhtml5player.registerSkin('gray', skin_gray_config);

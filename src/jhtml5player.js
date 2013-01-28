@@ -125,12 +125,9 @@
         });
     }
 
-    function registerSkin(name, skin_object) {
-        jhtml5player.skins[name] = skin_object;
-    }
-
     function _createPlayerHtml(conf, player_id) {
-        video_srcs = [];
+        var skin = jhtml5player.skins[conf.skin];
+        var video_srcs = [];
         if (typeof(conf.video.src)==='string') {
             video_srcs.push({'tag':'source', 'src':conf.video.src});
         }
@@ -177,7 +174,7 @@
             'style': {
                 'display': 'block',
                 'width': conf.video.width + 'px',
-                'height': (conf.video.height + conf.skin.control_bar.height) + 'px',
+                'height': (conf.video.height + skin.control_bar.height) + 'px',
                 'padding': '0px',
                 'margin': '0px',
                 'position': 'relative',
@@ -196,7 +193,7 @@
                         tag_video,
                         _createLogooverlay(conf),
                         _createSubtitle(conf),
-                        conf.skin.create_big_play_button(conf.video.width, conf.video.height),
+                        skin.create_big_play_button(conf.video.width, conf.video.height),
                     ],
                 },
                 {
@@ -205,12 +202,12 @@
                     'style': {
                         'display': 'block',
                         'width': conf.video.width + 'px',
-                        'height': conf.skin.control_bar.height + 'px',
+                        'height': skin.control_bar.height + 'px',
                         'position': 'relative',
                         'padding': '0px',
                         'margin': '0px',
                     },
-                    'children': conf.skin.createControls(conf.video.width, conf.skin.control_bar.height),
+                    'children': skin.createControls(conf.video.width, skin.control_bar.height),
                 }
             ],
         }
@@ -218,10 +215,11 @@
     }
 
     function _createPlayer(conf, player_id) {
+        var skin = jhtml5player.skins[conf.skin];
         var v = $('#' + player_id + ' video').get(0);
         var subtitle = $('#' + player_id + ' span.jhtml5player-subtitle');
 
-        var skin_proxy = conf.skin.create_skin_proxy(player_id, v);
+        var skin_proxy = skin.create_skin_proxy(player_id, v);
         $.each(_VIDEO_EVENTS, function(index, evt) {
             var handler = skin_proxy[evt];
             if (typeof(handler)=='function') {
@@ -232,7 +230,7 @@
                 v.addEventListener(evt, f);
             }
         });
-        conf.skin.init(player_id, v);
+        skin.init(player_id, v);
         return {
             'id': player_id,
             'setSubtitle': function(s) {
@@ -304,7 +302,9 @@
 
     jhtml5player.dumpCss = dumpCss;
     jhtml5player.createCss = createCss;
-    jhtml5player.registerSkin = registerSkin;
+    jhtml5player.registerSkin = function registerSkin(name, skin_object) {
+        jhtml5player.skins[name] = skin_object;
+    };
     jhtml5player.requestFullScreen = function(player_id) {
         var $dom = $('#' + player_id).get(0);
         if ($dom.requestFullScreen) {
