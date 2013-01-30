@@ -153,20 +153,6 @@
             'children': video_srcs,
         };
 
-        var lo = conf.logo_overlays[0];
-        var lo_style = _copyDict(lo.style);
-        lo_style['width'] = lo.width + 'px';
-        lo_style['height'] = lo.height + 'px';
-        lo_style['display'] = 'block';
-        lo_style['position'] = 'absolute';
-        lo_style['left'] = lo.margin_x + 'px';
-        lo_style['top'] = lo.margin_y + 'px';
-
-        var tag_logooverlay = {
-            'tag': 'div',
-            'style': lo_style,
-        };
-
         var player_div = {
             'tag': 'div',
             'id': player_id,
@@ -187,13 +173,11 @@
                     'style': {
                         'width': conf.video.width + 'px',
                         'height': conf.video.height + 'px',
+                        'position': 'relative',
                         'display': 'block',
                     },
                     'children' : [
                         tag_video,
-                        _createLogooverlay(conf),
-                        _createSubtitle(conf),
-                        skin.create_big_play_button(conf.video.width, conf.video.height),
                     ],
                 },
                 {
@@ -211,6 +195,13 @@
                 }
             ],
         }
+        var los = _createLogoOverlay(conf, player_id);
+        for (var i=0; i<los.length; i++) {
+            player_div.children[0].children.push(los[i]);
+        }
+        player_div.children[0].children.push(_createSubtitle(conf, player_id));
+        player_div.children[0].children.push(skin.create_big_play_button(conf.video.width, conf.video.height));
+
         return dumpElement(player_div);
     }
 
@@ -243,26 +234,38 @@
                 if (!v.paused)
                     v.pause();
             },
+            'onClickLogoOverlay': function() {
+                //
+            },
         };
     }
 
-    function _createLogooverlay(conf) {
-        var lo = conf.logo_overlays[0];
-        var lo_style = _copyDict(lo.style);
-        lo_style['width'] = lo.width + 'px';
-        lo_style['height'] = lo.height + 'px';
-        lo_style['display'] = 'block';
-        lo_style['position'] = 'absolute';
-        lo_style['left'] = lo.margin_x + 'px';
-        lo_style['top'] = lo.margin_y + 'px';
-
-        return {
-            'tag': 'div',
-            'style': lo_style,
-        };
+    function _createLogoOverlay(conf, player_id) {
+        var tags = [];
+        for (var i=0; i<conf.logooverlays.length; i++) {
+            var lo = conf.logooverlays[i];
+            var lo_style = _copyDict(lo.style);
+            lo_style['position'] = 'absolute';
+            lo_style['margin'] = '0px';
+            lo_style['padding'] = '0px';
+            lo_style['border'] = 'none';
+            //lo_style['left'] = lo.margin_x + 'px';
+            //lo_style['top'] = lo.margin_y + 'px';
+            var top_bottom = lo.position.indexOf('bottom')==(-1) ? 'top' : 'bottom';
+            var left_right = lo.position.indexOf('right')==(-1) ? 'left' : 'right';
+            lo_style[top_bottom] = lo.marginy + 'px';
+            lo_style[left_right] = lo.marginx + 'px';
+            tags.push({
+                'tag': 'img',
+                'src': lo.image,
+                'class': 'logooverlay logooverlay-' + i,
+                'style': lo_style,
+            });
+        }
+        return tags;
     }
 
-    function _createSubtitle(conf) {
+    function _createSubtitle(conf, player_id) {
         return {
             'tag': 'div',
             'style': {
@@ -323,10 +326,25 @@
 
     $.fn.extend({
         createPlayer: function() {
-            var arg = arguments[0] || {};
+            var conf = arguments[0] || {};
+            var logooverlays = [];
+            if ( ! $.isArray(conf.logooverlays)) {
+                conf.logooverlays = [conf.logooverlays];
+            }
+
             var player_id = _createPlayerId();
-            $(this).html(_createPlayerHtml(arg, player_id));
-            return _createPlayer(arg, player_id);
+            $(this).html(_createPlayerHtml(conf, player_id));
+            var player = _createPlayer(conf, player_id);
+            $('#' + player_id).data('player', player);
+            for (var i=0; i<conf.logooverlays.length; i++) {
+                var lo = conf.logooverlays[i];
+                var o = $('#' + player_id + ' img.logooverlay-' + i);
+                if (lo.click) {
+                    o.click(lo.click);
+                }
+                o.hover(lo.mouseover || function() {}, lo.mouseout || function() {});
+            }
+            return player;
         }
     });
 })(jQuery);

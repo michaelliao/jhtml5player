@@ -1,5 +1,8 @@
 /*
- * jhtml5player gray skin
+ * jhtml5player gray skin.
+ * 
+ * thanks for Orman Clark's design:
+ *   http://www.premiumpixels.com/freebies/free-video-player-interface-psd/
  */
 
 (function($) {
