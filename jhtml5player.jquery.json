@@ -1,0 +1,29 @@
+{
+    "name": "jhtml5player",
+    "title": "jHtml5Player",
+    "description": "jQuery plugin for HTML5 video player support.",
+    "keywords": [
+        "html5",
+        "video",
+        "player"
+    ],
+    "version": "0.1.1",
+    "author": {
+        "name": "Michael Liao",
+        "url": "https://github.com/michaelliao"
+    },
+    "maintainers": [],
+    "licenses": [
+        {
+            "type": "GPLv3",
+            "url": "http://www.gnu.org/licenses/gpl-3.0.txt"
+        }
+    ],
+    "bugs": "https://github.com/michaelliao/jhtml5player/issues",
+    "homepage": "http://michaelliao.github.com/jhtml5player/",
+    "docs": "http://michaelliao.github.com/jhtml5player/",
+    "download": "https://github.com/michaelliao/jhtml5player/archive/master.zip",
+    "dependencies": {
+        "jquery": ">=1.5"
+    }
+}
