@@ -8,9 +8,6 @@
     <script type="text/javascript" src="src/skin/gray/jhtml5player.skin.gray.js"></script>
     <script type="text/javascript">
 var player_config = {
-
-    id: 'v1234',
-    class: '',
     subtitle: 'http://localhost:8080/s.srt',
 
     video: {
@@ -35,18 +32,31 @@ var player_config = {
 
     prefer_flash: true,
 
-    logo_overlays: [{
+    logooverlays: [{
         'style': {
-            'background-image': 'url(http://www.w3.org/html/logo/badge/html5-badge-h-multimedia.png)',
+            //'background-image': 'url(http://www.w3.org/html/logo/badge/html5-badge-h-multimedia.png)',
+            'opacity': '0.6',
+            'cursor': 'pointer',
+        },
+        'image': 'http://www.w3.org/html/logo/badge/html5-badge-h-multimedia.png',
+        'position': 'left top',
+        'marginx': 30,
+        'marginy': 30,
+        'click': function() { window.open('http://www.w3.org/'); },
+        'mouseover': function() { $(this).css('opacity', '1.0'); },
+        'mouseout': function() { $(this).css('opacity', '0.6'); },
+    },
+    {
+        'style': {
+            //'background-image': 'url(http://www.w3.org/html/logo/badge/html5-badge-v-multimedia.png)',
             'opacity': '0.8',
             'cursor': 'pointer',
         },
-        'width': 133,
-        'height': 64,
-        'position': 'left top',
-        'margin_x': 30,
-        'margin_y': 30,
-        'onclick': function() { window.open('http://www.w3.org/'); },
+        'image': 'http://www.w3.org/html/logo/badge/html5-badge-v-multimedia.png',
+        'position': 'right bottom',
+        'marginx': 30,
+        'marginy': 50,
+        'click': function() { window.open('http://www.w3.org/'); },
     }],
 
     skin: 'gray',
@@ -72,7 +82,7 @@ $(function() {
 &lt;script&gt;
   $(function() {
     var conf = { video: { width: 640, height: 360, src: 'http://your/video.mp4' }, skin: 'gray' };
-    var player = $('#test-player').createPlayer(conf);
+    $('#test-player').createPlayer(conf);
   });
 &lt;/script&gt;
 &lt;div id="test-player"&gt;&lt;/div&gt;
