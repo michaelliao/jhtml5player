@@ -34,7 +34,6 @@ var player_config = {
 
     logooverlays: [{
         'style': {
-            //'background-image': 'url(http://www.w3.org/html/logo/badge/html5-badge-h-multimedia.png)',
             'opacity': '0.6',
             'cursor': 'pointer',
         },
@@ -48,15 +47,16 @@ var player_config = {
     },
     {
         'style': {
-            //'background-image': 'url(http://www.w3.org/html/logo/badge/html5-badge-v-multimedia.png)',
-            'opacity': '0.8',
+            'opacity': '0.6',
             'cursor': 'pointer',
         },
-        'image': 'http://www.w3.org/html/logo/badge/html5-badge-v-multimedia.png',
-        'position': 'right bottom',
-        'marginx': 30,
-        'marginy': 50,
-        'click': function() { window.open('http://www.w3.org/'); },
+        'image': 'http://camo.github.com/abad93f42020b733148435e2cd92ce15c542d320/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67',
+        'position': 'right top',
+        'marginx': 0,
+        'marginy': 0,
+        'click': function() { window.open('https://github.com/michaelliao/jhtml5player'); },
+        'mouseover': function() { $(this).css('opacity', '1.0'); },
+        'mouseout': function() { $(this).css('opacity', '0.6'); },
     }],
 
     skin: 'gray',
