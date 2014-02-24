@@ -3,10 +3,71 @@
 <head>
     <meta charset="utf-8" />
     <title>jhtml5player</title>
+    <style type="text/css">
+div.loading {
+    display: block;
+    position: relative;
+    background-color: #000;
+}
+
+div.loading > div {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    padding: 0;
+    margin: 0;
+    border-radius: 5px;
+    background-color: #fff;
+}
+    </style>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
     <script type="text/javascript" src="src/jhtml5player.js"></script>
     <script type="text/javascript" src="src/skin/gray/jhtml5player.skin.gray.js"></script>
     <script type="text/javascript">
+function generate_loading(W, w) {
+    var R = W / 2.0;
+    var r = w / 2.0;
+    var x1 = R - r;
+    var y1 = 0;
+    var x2 = R - r + (R - r) * Math.cos(Math.PI / 4);
+    var y2 = R - r - (R - r) * Math.sin(Math.PI / 4);
+    var x3 = R + R - r - r;
+    var y3 = R - r;
+    var x4 = x2;
+    var y4 = R - r + (R - r) * Math.sin(Math.PI / 4);
+    var x5 = x1;
+    var y5 = R + R - r - r;
+    var x6 = R - r - (R - r) * Math.cos(Math.PI / 4);
+    var y6 = y4;
+    var x7 = 0;
+    var y7 = R - r;
+    var x8 = x6;
+    var y8 = y2;
+    var points = [[x1, y1], [x2, y2], [x3, y3], [x4, y4], [x5, y5], [x6, y6], [x7, y7], [x8, y8]];
+    L = [];
+    for (var i=0; i<8; i++) {
+        var p = points[i];
+        var s = '<div style="left:' + p[0] + 'px;top:' + p[1] + 'px"></div>';
+        L.push(s);
+    }
+    return L.join('');
+}
+
+$(function() {
+    var W = 60;
+    var w = 10;
+    $('div.loading').css('width', W + 'px').css('height', W + 'px').html(generate_loading(W, w));
+    var loops = [0, 0, 0, 0, 0.25, 0.5, 0.75, 1.0];
+    var children = $('div.loading').children('div');
+    setInterval(function() {
+        children.each(function(index) {
+            $(this).css('opacity', loops[index]);
+        });
+        loops.unshift(loops.pop());
+    }, 100);
+});
+
+
 var player_config = {
     subtitle: 'http://localhost:8080/s.srt',
 
@@ -73,6 +134,10 @@ $(function() {
         <div><p><a href="https://github.com/michaelliao/jhtml5player" target="_blank">jhtml5player on GitHub</a></p></div>
         <div>
             <div id="test-player"></div>
+        </div>
+        <div>
+            <div class="loading">
+            </div>
         </div>
         <div><pre>
 // show me the code:

@@ -43,7 +43,7 @@
 
     function _createPlayerId() {
         _player_id ++;
-        return 'JHTML5PLAYER_ID_' + _player_id;
+        return 'J_HTML5PLAYER_ID_' + _player_id;
     }
 
     function _copyDict(d) {
